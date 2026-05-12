@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>My Finance - HRMS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+         :root {
+            --primary: #0d9298;
+            --primary-hover: #0a6b6e;
+            --sidebar-bg: #0d1e27;
+            --sidebar-hover: #122533;
+            --bg-color: #f4f6f8;
+            --topbar-bg: #ffffff;
+            --text-main: #333333;
+            --border-color: #e5e7eb;
+            --cyan-badge: #0d9298;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+        /* Top Bar */
+        
+        nav {
+            height: 60px;
+            background-color: var(--topbar-bg);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            justify-content: space-between;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+            z-index: 20;
+        }
+        
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .hamburger {
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--primary);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            background: var(--primary);
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+        }
+        
+        .logo-icon i {
+            color: #fff;
+            font-size: 18px;
+        }
+        
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--sidebar-bg);
+            letter-spacing: 0.5px;
+        }
+        
+        .logo-highlight {
+            color: var(--primary);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+            font-size: 22px;
+        }
+        
+        .nav-user-container {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .nav-user-circle {
+            background: var(--primary);
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+        }
+        
+        .user-dropdown {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            width: 150px;
+            display: none;
+            flex-direction: column;
+            z-index: 100;
+            border: 1px solid #eee;
+        }
+        
+        .user-dropdown.show {
+            display: flex;
+        }
+        
+        .user-dropdown a {
+            padding: 12px 15px;
+            text-decoration: none;
+            color: #555;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.2s;
+        }
+        
+        .user-dropdown a:hover {
+            background: #f8f9fa;
+        }
+        /* Layout */
+        
+        .app-body {
+            display: flex;
+            flex-grow: 1;
+            overflow: hidden;
+        }
+        /* Sidebar */
+        
+        .sidebar {
+            width: 240px;
+            background-color: var(--sidebar-bg);
+            color: #94a3b8;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            flex-shrink: 0;
+            overflow-y: auto;
+            background-image: radial-gradient(circle at 20% 90%, rgba(13, 146, 152, 0.05) 0%, transparent 50%), radial-gradient(circle at 80% 90%, rgba(10, 107, 110, 0.04) 0%, transparent 50%);
+        }
+        
+        .profile-header {
+            padding: 30px 20px 20px;
+            text-align: center;
+        }
+        
+        .avatar-circle {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background-color: #000;
+            border: 2px solid var(--primary);
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .avatar-circle i {
+            font-size: 55px;
+            color: #fff;
+            margin-bottom: -5px;
+        }
+        
+        .profile-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            margin-top: 10px;
+        }
+        
+        .nav-list {
+            list-style: none;
+            padding: 10px 0;
+            flex-grow: 1;
+        }
+        
+        .nav-item {
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 13px;
+            color: #b0bac3;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        
+        .nav-item i {
+            width: 25px;
+            font-size: 14px;
+            text-align: left;
+        }
+        
+        .nav-item:hover {
+            background-color: var(--sidebar-hover);
+            color: #fff;
+        }
+        
+        .nav-item.active {
+            background-color: var(--primary);
+            color: #fff;
+            border-radius: 0 20px 20px 0;
+            margin-right: 15px;
+            padding-left: 25px;
+        }
+        /* Main Content */
+        
+        .main-wrapper {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow-y: auto;
+        }
+        
+        .top-tab-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 15px 0;
+        }
+        
+        .top-tab {
+            display: flex;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .tab-icon {
+            background-color: #e0f2f1;
+            color: var(--primary);
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .tab-text {
+            background-color: white;
+            color: #555;
+            padding: 8px 30px;
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+        
+        .content-area {
+            flex-grow: 1;
+            padding: 10px 30px 30px;
+            overflow-y: auto;
+        }
+        
+        .finance-shell {
+            max-width: 1120px;
+            margin: 0 auto;
+            display: grid;
+            gap: 20px;
+        }
+        
+        .finance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 16px;
+        }
+        
+        .finance-kicker {
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .finance-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            color: var(--sidebar-bg);
+            line-height: 1.05;
+            margin-bottom: 10px;
+        }
+        
+        .finance-subtitle {
+            max-width: 720px;
+            color: #5b6470;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+        
+        .finance-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: #e8f7f7;
+            color: var(--primary);
+            border: 1px solid rgba(13, 146, 152, 0.14);
+            font-weight: 700;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+        }
+        
+        .metric-card,
+        .panel-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+        }
+        
+        .metric-card {
+            padding: 22px;
+        }
+        
+        .metric-label {
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 14px;
+        }
+        
+        .metric-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 30px;
+            color: var(--sidebar-bg);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+        
+        .metric-note {
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.55;
+        }
+        
+        .panel-stack {
+            display: grid;
+            gap: 18px;
+        }
+        
+        .panel-card {
+            padding: 24px;
+            display: none;
+        }
+        
+        .panel-card.active {
+            display: block;
+        }
+        
+        .panel-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+        
+        .panel-title {
+            font-size: 22px;
+            color: var(--sidebar-bg);
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        
+        .panel-subtitle {
+            color: #64748b;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+        
+        .panel-pill {
+            padding: 9px 12px;
+            border-radius: 999px;
+            background: #f8fafc;
+            color: #475569;
+            border: 1px solid var(--border-color);
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 18px;
+        }
+        
+        .detail-item {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 16px;
+        }
+        
+        .detail-label {
+            color: #64748b;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .detail-value {
+            color: var(--sidebar-bg);
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.5;
+        }
+        
+        .mini-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 18px;
+            overflow: hidden;
+            border-radius: 18px;
+        }
+        
+        .mini-table th,
+        .mini-table td {
+            text-align: left;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+        }
+        
+        .mini-table th {
+            background: #f8fafc;
+            color: #64748b;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        
+        .mini-table td {
+            color: #334155;
+        }
+        
+        .badge-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        
+        .badge-chip {
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: #ecfeff;
+            color: #0f766e;
+            border: 1px solid rgba(13, 146, 152, 0.14);
+            font-size: 12px;
+            font-weight: 700;
+        }
+        
+        @media (max-width: 1024px) {
+            .metrics-grid,
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+            .finance-header,
+            .panel-top {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav>
+        <div class="nav-left">
+            <i class="fas fa-bars hamburger"></i>
+            <a href="hrms_self_details-page.html" class="logo">
+                <div class="logo-icon"><i class="fas fa-layer-group"></i></div>
+                <div class="logo-text">HRMS <span class="logo-highlight">Portal</span></div>
+            </a>
+        </div>
+
+        <div class="nav-user-container">
+            <div class="nav-user" onclick="toggleDropdown()">
+                <div class="nav-user-circle"><i class="fas fa-user" style="font-size: 16px;"></i></div>
+            </div>
+            <div class="user-dropdown" id="userDropdown">
+                <a href="#"><i class="fas fa-info-circle"></i> About</a>
+                <a href="#"><i class="fas fa-cog"></i> Settings</a>
+                <a href="hrms_employee_login_page.html" onclick="localStorage.removeItem('userEmail')"><i
+            class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="app-body">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="profile-header">
+                <div class="avatar-circle">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="profile-name" id="sidebar-profile-name"></div>
+            </div>
+
+            <ul class="nav-list">
+                <!-- <li><a href="hrms_self_details-page.html" class="nav-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li> -->
+                <li><a href="#" onclick="switchFinanceSection('payslip', this)" class="nav-item"><i
+              class="fas fa-file-invoice-dollar"></i> Pay Slip</a></li>
+                <li><a href="#" onclick="switchFinanceSection('sdf', this)" class="nav-item"><i class="fas fa-file-alt"></i>
+            SDF</a></li>
+                <li><a href="#" onclick="switchFinanceSection('salary', this)" class="nav-item"><i
+              class="fas fa-money-bill-wave"></i> Salary</a></li>
+                <li><a href="#" onclick="switchFinanceSection('insurance', this)" class="nav-item active"><i
+              class="fas fa-users"></i> Group Insurance</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Wrapper -->
+        <div class="main-wrapper">
+
+            <div class="top-tab-container">
+                <div class="top-tab">
+                    <div class="tab-icon"><i class="fas fa-users"></i></div>
+                    <div class="tab-text">Group Insurance</div>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <div class="finance-shell">
+                    <div class="finance-header">
+                        <div>
+                            <div class="finance-kicker">Payroll snapshot</div>
+                            <h1 class="finance-title" id="finance-page-title">Group Insurance</h1>
+                            <p class="finance-subtitle" id="finance-page-subtitle">Coverage, salary, and payroll details based on your profile and the current finance snapshot.</p>
+                        </div>
+                        <div class="finance-status">
+                            <i class="fas fa-shield-alt"></i>
+                            <span id="finance-sync-status">Profile linked</span>
+                        </div>
+                    </div>
+
+                    <section class="metrics-grid">
+                        <article class="metric-card">
+                            <div class="metric-label">Net Pay</div>
+                            <div class="metric-value" id="metric-net-pay">₹76,063</div>
+                            <div class="metric-note" id="metric-net-note">Estimated take-home after statutory deductions</div>
+                        </article>
+                        <article class="metric-card">
+                            <div class="metric-label">Gross Salary</div>
+                            <div class="metric-value" id="metric-gross-pay">₹85,000</div>
+                            <div class="metric-note" id="metric-gross-note">Monthly CTC snapshot for the selected profile</div>
+                        </article>
+                        <article class="metric-card">
+                            <div class="metric-label">Deductions</div>
+                            <div class="metric-value" id="metric-deductions">₹8,937</div>
+                            <div class="metric-note" id="metric-deduction-note">PF, tax, and insurance contributions</div>
+                        </article>
+                        <article class="metric-card">
+                            <div class="metric-label">Coverage</div>
+                            <div class="metric-value" id="metric-coverage">₹5,00,000</div>
+                            <div class="metric-note" id="metric-coverage-note">Group medical insurance sum insured</div>
+                        </article>
+                    </section>
+
+                    <div class="panel-stack">
+                        <section class="panel-card active" id="finance-panel-payslip">
+                            <div class="panel-top">
+                                <div>
+                                    <div class="panel-title">Pay Slip</div>
+                                    <div class="panel-subtitle">Current month breakup with earnings, deductions, and take-home amount.</div>
+                                </div>
+                                <div class="panel-pill" id="payslip-pill">May 2026 payout</div>
+                            </div>
+                            <div class="detail-grid">
+                                <div class="detail-item">
+                                    <div class="detail-label">Employee</div>
+                                    <div class="detail-value" id="payslip-employee">Guest User</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Designation</div>
+                                    <div class="detail-value" id="payslip-designation">Software Engineer</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Pay Period</div>
+                                    <div class="detail-value" id="payslip-period">01 May 2026 - 31 May 2026</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Net Pay Date</div>
+                                    <div class="detail-value" id="payslip-date">31 May 2026</div>
+                                </div>
+                            </div>
+                            <table class="mini-table" aria-label="Payslip breakdown">
+                                <thead>
+                                    <tr>
+                                        <th>Earning Type</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Basic Pay</td>
+                                        <td id="payslip-basic">₹42,500</td>
+                                    </tr>
+                                    <tr>
+                                        <td>HRA</td>
+                                        <td id="payslip-hra">₹17,000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Special Allowance</td>
+                                        <td id="payslip-allowance">₹20,000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tax & PF</td>
+                                        <td id="payslip-deductions">₹8,937</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <section class="panel-card" id="finance-panel-sdf">
+                            <div class="panel-top">
+                                <div>
+                                    <div class="panel-title">SDF</div>
+                                    <div class="panel-subtitle">Summary of salary-linked deductions and statutory benefits.</div>
+                                </div>
+                                <div class="panel-pill">Statutory summary</div>
+                            </div>
+                            <div class="detail-grid">
+                                <div class="detail-item">
+                                    <div class="detail-label">Provident Fund</div>
+                                    <div class="detail-value" id="sdf-pf">₹1,800 employer + ₹1,800 employee</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Professional Tax</div>
+                                    <div class="detail-value" id="sdf-pt">₹200</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Income Tax</div>
+                                    <div class="detail-value" id="sdf-it">₹4,937</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Insurance Premium</div>
+                                    <div class="detail-value" id="sdf-insurance">₹1,200</div>
+                                </div>
+                            </div>
+                            <div class="badge-row" id="sdf-badges">
+                                <span class="badge-chip">PF updated</span>
+                                <span class="badge-chip">Tax mapped</span>
+                                <span class="badge-chip">Insurance active</span>
+                            </div>
+                        </section>
+
+                        <section class="panel-card" id="finance-panel-salary">
+                            <div class="panel-top">
+                                <div>
+                                    <div class="panel-title">Salary</div>
+                                    <div class="panel-subtitle">Monthly salary trajectory and compensation notes tied to the current employee profile.</div>
+                                </div>
+                                <div class="panel-pill" id="salary-pill">Annual CTC ₹10,20,000</div>
+                            </div>
+                            <div class="detail-grid">
+                                <div class="detail-item">
+                                    <div class="detail-label">Current Monthly Salary</div>
+                                    <div class="detail-value" id="salary-monthly">₹85,000</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Annual CTC</div>
+                                    <div class="detail-value" id="salary-annual">₹10,20,000</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Increment Cycle</div>
+                                    <div class="detail-value">Annual performance review</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Payroll Mode</div>
+                                    <div class="detail-value">Bank transfer</div>
+                                </div>
+                            </div>
+                            <table class="mini-table" aria-label="Salary highlights">
+                                <thead>
+                                    <tr>
+                                        <th>Component</th>
+                                        <th>Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Variable Pay</td>
+                                        <td>Up to 10%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Performance Bonus</td>
+                                        <td>Quarterly eligibility</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pay Release</td>
+                                        <td id="salary-release">Last working day</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bank Account</td>
+                                        <td>Linked and verified</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <section class="panel-card" id="finance-panel-insurance">
+                            <div class="panel-top">
+                                <div>
+                                    <div class="panel-title">Group Insurance</div>
+                                    <div class="panel-subtitle">Medical, family, and claim coverage currently configured for the employee.</div>
+                                </div>
+                                <div class="panel-pill">Coverage active</div>
+                            </div>
+                            <div class="detail-grid">
+                                <div class="detail-item">
+                                    <div class="detail-label">Sum Insured</div>
+                                    <div class="detail-value">₹5,00,000</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Family Cover</div>
+                                    <div class="detail-value">Employee + spouse + 2 dependents</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Network Hospitals</div>
+                                    <div class="detail-value">12,000+ cashless providers</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Claim Window</div>
+                                    <div class="detail-value">72-hour intimation recommended</div>
+                                </div>
+                            </div>
+                            <div class="badge-row">
+                                <span class="badge-chip">Cashless care</span>
+                                <span class="badge-chip">Family coverage</span>
+                                <span class="badge-chip">24x7 claims</span>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Power Automate Backend Integration for Profile Name
+        const BACKEND_URL = "/api/powerautomate";
+        const FINANCE_SECTIONS = {
+            payslip: {
+                title: 'Pay Slip',
+                subtitle: 'Current month breakup with earnings, deductions, and take-home amount.'
+            },
+            sdf: {
+                title: 'SDF',
+                subtitle: 'Summary of salary-linked deductions and statutory benefits.'
+            },
+            salary: {
+                title: 'Salary',
+                subtitle: 'Monthly salary trajectory and compensation notes tied to the current employee profile.'
+            },
+            insurance: {
+                title: 'Group Insurance',
+                subtitle: 'Medical, family, and claim coverage currently configured for the employee.'
+            }
+        };
+
+        const FINANCE_DATA = {
+            default: {
+                name: 'Guest User',
+                designation: 'Software Engineer',
+                period: '01 May 2026 - 31 May 2026',
+                payout: '31 May 2026',
+                gross: '₹85,000',
+                net: '₹76,063',
+                deductions: '₹8,937',
+                annual: '₹10,20,000',
+                basic: '₹42,500',
+                hra: '₹17,000',
+                allowance: '₹20,000',
+                pf: '₹1,800 employer + ₹1,800 employee',
+                pt: '₹200',
+                it: '₹4,937',
+                insurance: '₹1,200'
+            },
+            IT: {
+                name: 'IT Team',
+                designation: 'Software Engineer',
+                period: '01 May 2026 - 31 May 2026',
+                payout: '31 May 2026',
+                gross: '₹85,000',
+                net: '₹76,063',
+                deductions: '₹8,937',
+                annual: '₹10,20,000',
+                basic: '₹42,500',
+                hra: '₹17,000',
+                allowance: '₹20,000',
+                pf: '₹1,800 employer + ₹1,800 employee',
+                pt: '₹200',
+                it: '₹4,937',
+                insurance: '₹1,200'
+            },
+            Finance: {
+                name: 'Finance Team',
+                designation: 'Accountant',
+                period: '01 May 2026 - 31 May 2026',
+                payout: '31 May 2026',
+                gross: '₹68,000',
+                net: '₹60,944',
+                deductions: '₹7,056',
+                annual: '₹8,16,000',
+                basic: '₹34,000',
+                hra: '₹13,600',
+                allowance: '₹13,200',
+                pf: '₹1,620 employer + ₹1,620 employee',
+                pt: '₹200',
+                it: '₹3,616',
+                insurance: '₹1,000'
+            },
+            HR: {
+                name: 'HR Team',
+                designation: 'HR Manager',
+                period: '01 May 2026 - 31 May 2026',
+                payout: '31 May 2026',
+                gross: '₹72,000',
+                net: '₹64,512',
+                deductions: '₹7,488',
+                annual: '₹8,64,000',
+                basic: '₹36,000',
+                hra: '₹14,400',
+                allowance: '₹14,400',
+                pf: '₹1,680 employer + ₹1,680 employee',
+                pt: '₹200',
+                it: '₹3,928',
+                insurance: '₹1,100'
+            },
+            Sales: {
+                name: 'Sales Team',
+                designation: 'Sales Executive',
+                period: '01 May 2026 - 31 May 2026',
+                payout: '31 May 2026',
+                gross: '₹69,000',
+                net: '₹61,821',
+                deductions: '₹7,179',
+                annual: '₹8,28,000',
+                basic: '₹34,500',
+                hra: '₹13,800',
+                allowance: '₹14,700',
+                pf: '₹1,650 employer + ₹1,650 employee',
+                pt: '₹200',
+                it: '₹3,679',
+                insurance: '₹1,050'
+            },
+            'Human Resources': {
+                name: 'HR Team',
+                designation: 'HR Manager',
+                period: '01 May 2026 - 31 May 2026',
+                payout: '31 May 2026',
+                gross: '₹72,000',
+                net: '₹64,512',
+                deductions: '₹7,488',
+                annual: '₹8,64,000',
+                basic: '₹36,000',
+                hra: '₹14,400',
+                allowance: '₹14,400',
+                pf: '₹1,680 employer + ₹1,680 employee',
+                pt: '₹200',
+                it: '₹3,928',
+                insurance: '₹1,100'
+            }
+        };
+        let currentFinanceSection = 'insurance';
+        let currentFinanceData = FINANCE_DATA.default;
+
+        window.onload = fetchProfileData;
+
+        async function fetchProfileData() {
+            try {
+                const userEmail = localStorage.getItem("userEmail") || "";
+                const response = await fetch(BACKEND_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        action: "getProfile",
+                        payload: {
+                            email: userEmail
+                        }
+                    })
+                });
+
+                let data = await response.json();
+
+                if (Array.isArray(data)) {
+                    if (data.length === 0) return;
+                    data = data[0];
+                }
+
+                const profile = {
+                    name: data.name || "Guest User",
+                    department: data.department || data.Department || '',
+                    designation: data.designation || data.Designation || 'Software Engineer'
+                };
+
+                currentFinanceData = FINANCE_DATA[profile.department] || FINANCE_DATA.default;
+                currentFinanceData = {
+                    ...currentFinanceData,
+                    name: profile.name,
+                    designation: profile.designation
+                };
+
+                renderFinanceSnapshot(currentFinanceData);
+                document.getElementById('sidebar-profile-name').innerText = profile.name;
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                renderFinanceSnapshot(currentFinanceData);
+            }
+        }
+
+        function renderFinanceSnapshot(data) {
+            document.getElementById('finance-page-title').innerText = FINANCE_SECTIONS[currentFinanceSection].title;
+            document.getElementById('finance-page-subtitle').innerText = FINANCE_SECTIONS[currentFinanceSection].subtitle;
+            document.getElementById('finance-sync-status').innerText = 'Profile linked';
+
+            document.getElementById('metric-net-pay').innerText = data.net;
+            document.getElementById('metric-gross-pay').innerText = data.gross;
+            document.getElementById('metric-deductions').innerText = data.deductions;
+            document.getElementById('metric-coverage').innerText = '₹5,00,000';
+
+            document.getElementById('payslip-employee').innerText = data.name;
+            document.getElementById('payslip-designation').innerText = data.designation;
+            document.getElementById('payslip-period').innerText = data.period;
+            document.getElementById('payslip-date').innerText = data.payout;
+            document.getElementById('payslip-pill').innerText = 'May 2026 payout';
+            document.getElementById('payslip-basic').innerText = data.basic;
+            document.getElementById('payslip-hra').innerText = data.hra;
+            document.getElementById('payslip-allowance').innerText = data.allowance;
+            document.getElementById('payslip-deductions').innerText = data.deductions;
+
+            document.getElementById('sdf-pf').innerText = data.pf;
+            document.getElementById('sdf-pt').innerText = data.pt;
+            document.getElementById('sdf-it').innerText = data.it;
+            document.getElementById('sdf-insurance').innerText = data.insurance;
+
+            document.getElementById('salary-pill').innerText = `Annual CTC ${data.annual}`;
+            document.getElementById('salary-monthly').innerText = data.gross;
+            document.getElementById('salary-annual').innerText = data.annual;
+            document.getElementById('salary-release').innerText = data.payout;
+
+            document.getElementById('metric-net-note').innerText = 'Estimated take-home after statutory deductions';
+            document.getElementById('metric-gross-note').innerText = `Based on ${data.designation}`;
+            document.getElementById('metric-deduction-note').innerText = 'PF, tax, and insurance contributions';
+            document.getElementById('metric-coverage-note').innerText = 'Group medical insurance sum insured';
+        }
+
+        // Dropdown toggle
+        function toggleDropdown() {
+            document.getElementById("userDropdown").classList.toggle("show");
+        }
+
+        window.addEventListener('click', function(e) {
+            const container = document.querySelector('.nav-user-container');
+            if (container && !container.contains(e.target)) {
+                const dropdown = document.getElementById('userDropdown');
+                if (dropdown && dropdown.classList.contains('show')) {
+                    dropdown.classList.remove('show');
+                }
+            }
+        });
+
+        // Finance Tab Switching Logic
+        function switchFinanceSection(sectionId, element) {
+            if (typeof event !== 'undefined') event.preventDefault();
+
+            currentFinanceSection = sectionId;
+
+            const tabIcon = document.querySelector('.tab-icon i');
+            const tabText = document.querySelector('.tab-text');
+            const panelTitle = document.getElementById('finance-page-title');
+            const panelSubtitle = document.getElementById('finance-page-subtitle');
+
+            const iconMap = {
+                payslip: 'fas fa-file-invoice-dollar',
+                sdf: 'fas fa-file-alt',
+                salary: 'fas fa-money-bill-wave',
+                insurance: 'fas fa-users'
+            };
+
+            if (tabIcon) tabIcon.className = iconMap[sectionId] || 'fas fa-wallet';
+            if (tabText) tabText.innerText = FINANCE_SECTIONS[sectionId] ? .title || 'Finance';
+            if (panelTitle) panelTitle.innerText = FINANCE_SECTIONS[sectionId] ? .title || 'Finance';
+            if (panelSubtitle) panelSubtitle.innerText = FINANCE_SECTIONS[sectionId] ? .subtitle || '';
+
+            document.querySelectorAll('.nav-list .nav-item').forEach(nav => nav.classList.remove('active'));
+            if (element) element.classList.add('active');
+
+            document.querySelectorAll('.panel-card').forEach(panel => panel.classList.remove('active'));
+            const activePanel = document.getElementById(`finance-panel-${sectionId}`);
+            if (activePanel) activePanel.classList.add('active');
+
+            renderFinanceSnapshot(currentFinanceData);
+        }
+
+        renderFinanceSnapshot(currentFinanceData);
+    </script>
+
+</body>
+
+</html>
